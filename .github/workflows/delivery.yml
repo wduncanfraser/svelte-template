@@ -164,7 +164,7 @@ jobs:
       with:
         run_install: true
     - name: Submit dependency graph
-      uses: advanced-security/pnpm-dependency-submission-action@v1
+      uses: advanced-security/component-detection-dependency-submission-action@v0.1.1
 
   required-pr-checks:
     if: ${{ always() && github.event_name == 'pull_request' }}
