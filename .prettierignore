@@ -1,0 +1,6 @@
+build/
+.svelte-kit/
+node_modules/
+pnpm-lock.yaml
+.claude/
+src/lib/generated/

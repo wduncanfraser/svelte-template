@@ -1,0 +1,14 @@
+---
+services:
+  frontend:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    networks:
+      - ktor-koin-template
+
+networks:
+  ktor-koin-template:
+    external: true
+    name: ktor-koin-template

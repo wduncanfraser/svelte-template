@@ -1,0 +1,192 @@
+---
+name: Delivery
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  SERVICE_TAG: svelte-template:latest
+
+jobs:
+  yaml-lint:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run yamllint
+        uses: reviewdog/action-yamllint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          fail_level: warning
+          filter_mode: file
+          level: warning
+
+  github-actions-lint:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run actionlint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          fail_level: warning
+          level: warning
+
+  lint:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+      - name: Run ESLint and Prettier
+        run: pnpm lint
+
+  svelte-check:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+      - name: Run svelte-check
+        run: pnpm svelte-check
+
+  test:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+      - name: Run tests
+        run: pnpm test
+
+  docker-build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ env.SERVICE_TAG }}
+
+      - name: Scan image
+        id: trivy
+        uses: aquasecurity/trivy-action@0.35.0
+        continue-on-error: true
+        with:
+          image-ref: ${{ env.SERVICE_TAG }}
+          format: sarif
+          output: trivy-results.sarif
+          severity: HIGH,CRITICAL
+
+      - name: Upload SARIF to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-results.sarif
+
+  api-codegen:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+      - name: Generate API client
+        run: pnpm generate-api
+      - name: Check for uncommitted changes
+        run: git diff --exit-code
+
+  dependency-submission:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: true
+      - name: Submit dependency graph
+        uses: advanced-security/pnpm-dependency-submission-action@v1
+
+  required-pr-checks:
+    if: ${{ always() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-24.04
+    needs:
+      - yaml-lint
+      - github-actions-lint
+      - lint
+      - svelte-check
+      - test
+      - docker-build
+      - api-codegen
+      - dependency-submission
+    permissions: {}
+
+    steps:
+      - name: Verify all checks passed or were skipped
+        env:
+          RESULTS: ${{ join(needs.*.result, ',') }}
+        run: |
+          if echo "$RESULTS" | grep -qE '(failure|cancelled)'; then
+            echo "One or more required checks failed or were cancelled"
+            exit 1
+          fi
+          echo "All required checks passed or were skipped"
