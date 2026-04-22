@@ -4,26 +4,26 @@
  * RFC 9457 compliant error response
  */
 export type ProblemDetails = {
-	/**
-	 * URI reference identifying the problem type.
-	 */
-	type: string;
-	/**
-	 * A short, human-readable summary of the problem type.
-	 */
-	title: string;
-	/**
-	 * HTTP status code for this error occurrence.
-	 */
-	status: number;
-	/**
-	 * Explanation specific to this occurrence of the problem.
-	 */
-	detail: string;
-	/**
-	 * URI reference identifying the specific occurrence of the problem.
-	 */
-	instance: string;
+    /**
+     * URI reference identifying the problem type.
+     */
+    type: string;
+    /**
+     * A short, human-readable summary of the problem type.
+     */
+    title: string;
+    /**
+     * HTTP status code for this error occurrence.
+     */
+    status: number;
+    /**
+     * Explanation specific to this occurrence of the problem.
+     */
+    detail: string;
+    /**
+     * URI reference identifying the specific occurrence of the problem.
+     */
+    instance: string;
 };
 
 /**
@@ -45,40 +45,40 @@ export type UpdatedAt = string;
  * A todo item.
  */
 export type TodoResponse = {
-	id: string;
-	name: TodoName;
-	/**
-	 * Is the Todo completed.
-	 */
-	completed: boolean;
-	/**
-	 * Date and time when the Todo was marked completed.
-	 */
-	completedAt?: string;
-	createdAt: CreatedAt;
-	updatedAt: UpdatedAt;
+    id: string;
+    name: TodoName;
+    /**
+     * Is the Todo completed.
+     */
+    completed: boolean;
+    /**
+     * Date and time when the Todo was marked completed.
+     */
+    completedAt?: string;
+    createdAt: CreatedAt;
+    updatedAt: UpdatedAt;
 };
 
 /**
  * Paginated Results with metadata describing the page
  */
 export type PaginationMetadata = {
-	page: number;
-	pageSize: number;
-	totalPages: number;
-	totalRows: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+    totalRows: number;
 };
 
 export type CreateTodoRequest = {
-	name: TodoName;
+    name: TodoName;
 };
 
 export type UpdateTodoRequest = {
-	name: TodoName;
-	/**
-	 * Is the Todo completed.
-	 */
-	completed: boolean;
+    name: TodoName;
+    /**
+     * Is the Todo completed.
+     */
+    completed: boolean;
 };
 
 /**
@@ -102,219 +102,219 @@ export type TodoCompleted = boolean;
 export type TodoId = string;
 
 export type ListTodosData = {
-	body?: never;
-	path?: never;
-	query?: {
-		/**
-		 * The number of items to return in a single request.
-		 */
-		pageSize?: number;
-		/**
-		 * The page number of results to return.
-		 */
-		page?: number;
-		/**
-		 * Filter for todos to only list completed vs incomplete records.
-		 */
-		completed?: boolean;
-	};
-	url: '/todos';
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * The number of items to return in a single request.
+         */
+        pageSize?: number;
+        /**
+         * The page number of results to return.
+         */
+        page?: number;
+        /**
+         * Filter for todos to only list completed vs incomplete records.
+         */
+        completed?: boolean;
+    };
+    url: '/todos';
 };
 
 export type ListTodosErrors = {
-	/**
-	 * Bad Request.
-	 */
-	400: ProblemDetails;
-	/**
-	 * Unauthorized. The request requires authentication.
-	 */
-	401: ProblemDetails;
-	/**
-	 * An unexpected error occurred when processing the request.
-	 */
-	default: ProblemDetails;
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
 };
 
 export type ListTodosError = ListTodosErrors[keyof ListTodosErrors];
 
 export type ListTodosResponses = {
-	/**
-	 * The list of Todos with pagination metadata.
-	 */
-	200: {
-		data: Array<TodoResponse>;
-		pagination: PaginationMetadata;
-	};
+    /**
+     * The list of Todos with pagination metadata.
+     */
+    200: {
+        data: Array<TodoResponse>;
+        pagination: PaginationMetadata;
+    };
 };
 
 export type ListTodosResponse = ListTodosResponses[keyof ListTodosResponses];
 
 export type CreateTodoData = {
-	/**
-	 * The request body for creating a Todo.
-	 */
-	body: CreateTodoRequest;
-	path?: never;
-	query?: never;
-	url: '/todos';
+    /**
+     * The request body for creating a Todo.
+     */
+    body: CreateTodoRequest;
+    path?: never;
+    query?: never;
+    url: '/todos';
 };
 
 export type CreateTodoErrors = {
-	/**
-	 * Bad Request.
-	 */
-	400: ProblemDetails;
-	/**
-	 * Unauthorized. The request requires authentication.
-	 */
-	401: ProblemDetails;
-	/**
-	 * An unexpected error occurred when processing the request.
-	 */
-	default: ProblemDetails;
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
 };
 
 export type CreateTodoError = CreateTodoErrors[keyof CreateTodoErrors];
 
 export type CreateTodoResponses = {
-	/**
-	 * Todo was created successfully.
-	 */
-	201: TodoResponse;
+    /**
+     * Todo was created successfully.
+     */
+    201: TodoResponse;
 };
 
 export type CreateTodoResponse = CreateTodoResponses[keyof CreateTodoResponses];
 
 export type DeleteTodoData = {
-	body?: never;
-	path: {
-		/**
-		 * The unique identifier of the Todo.
-		 */
-		'todo-id': string;
-	};
-	query?: never;
-	url: '/todos/{todo-id}';
+    body?: never;
+    path: {
+        /**
+         * The unique identifier of the Todo.
+         */
+        'todo-id': string;
+    };
+    query?: never;
+    url: '/todos/{todo-id}';
 };
 
 export type DeleteTodoErrors = {
-	/**
-	 * Bad Request.
-	 */
-	400: ProblemDetails;
-	/**
-	 * Unauthorized. The request requires authentication.
-	 */
-	401: ProblemDetails;
-	/**
-	 * The specified resource was not found
-	 */
-	404: ProblemDetails;
-	/**
-	 * An unexpected error occurred when processing the request.
-	 */
-	default: ProblemDetails;
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
 };
 
 export type DeleteTodoError = DeleteTodoErrors[keyof DeleteTodoErrors];
 
 export type DeleteTodoResponses = {
-	/**
-	 * Todo was deleted successfully.
-	 */
-	204: void;
+    /**
+     * Todo was deleted successfully.
+     */
+    204: void;
 };
 
 export type DeleteTodoResponse = DeleteTodoResponses[keyof DeleteTodoResponses];
 
 export type GetTodoData = {
-	body?: never;
-	path: {
-		/**
-		 * The unique identifier of the Todo.
-		 */
-		'todo-id': string;
-	};
-	query?: never;
-	url: '/todos/{todo-id}';
+    body?: never;
+    path: {
+        /**
+         * The unique identifier of the Todo.
+         */
+        'todo-id': string;
+    };
+    query?: never;
+    url: '/todos/{todo-id}';
 };
 
 export type GetTodoErrors = {
-	/**
-	 * Bad Request.
-	 */
-	400: ProblemDetails;
-	/**
-	 * Unauthorized. The request requires authentication.
-	 */
-	401: ProblemDetails;
-	/**
-	 * The specified resource was not found
-	 */
-	404: ProblemDetails;
-	/**
-	 * An unexpected error occurred when processing the request.
-	 */
-	default: ProblemDetails;
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
 };
 
 export type GetTodoError = GetTodoErrors[keyof GetTodoErrors];
 
 export type GetTodoResponses = {
-	/**
-	 * Todo was retrieved successfully.
-	 */
-	200: TodoResponse;
+    /**
+     * Todo was retrieved successfully.
+     */
+    200: TodoResponse;
 };
 
 export type GetTodoResponse = GetTodoResponses[keyof GetTodoResponses];
 
 export type UpdateTodoData = {
-	/**
-	 * The request body for updating a Todo.
-	 */
-	body: UpdateTodoRequest;
-	path: {
-		/**
-		 * The unique identifier of the Todo.
-		 */
-		'todo-id': string;
-	};
-	query?: never;
-	url: '/todos/{todo-id}';
+    /**
+     * The request body for updating a Todo.
+     */
+    body: UpdateTodoRequest;
+    path: {
+        /**
+         * The unique identifier of the Todo.
+         */
+        'todo-id': string;
+    };
+    query?: never;
+    url: '/todos/{todo-id}';
 };
 
 export type UpdateTodoErrors = {
-	/**
-	 * Bad Request.
-	 */
-	400: ProblemDetails;
-	/**
-	 * Unauthorized. The request requires authentication.
-	 */
-	401: ProblemDetails;
-	/**
-	 * The specified resource was not found
-	 */
-	404: ProblemDetails;
-	/**
-	 * An unexpected error occurred when processing the request.
-	 */
-	default: ProblemDetails;
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
 };
 
 export type UpdateTodoError = UpdateTodoErrors[keyof UpdateTodoErrors];
 
 export type UpdateTodoResponses = {
-	/**
-	 * Todo was updated successfully.
-	 */
-	200: TodoResponse;
+    /**
+     * Todo was updated successfully.
+     */
+    200: TodoResponse;
 };
 
 export type UpdateTodoResponse = UpdateTodoResponses[keyof UpdateTodoResponses];
 
 export type ClientOptions = {
-	baseUrl: 'http://localhost:8080/api/v1' | (string & {});
+    baseUrl: 'http://localhost:8080/api/v1' | (string & {});
 };

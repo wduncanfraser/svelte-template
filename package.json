@@ -13,6 +13,10 @@
 		"svelte-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"generate-api": "openapi-ts"
 	},
+	"packageManager": "pnpm@10.33.0",
+	"engines": {
+		"node": "24.x"
+	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@hey-api/openapi-ts": "^0.75.0",
