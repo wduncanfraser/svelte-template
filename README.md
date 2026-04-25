@@ -93,3 +93,13 @@ App is served at `http://localhost:5173` in dev mode, `http://localhost:80` in D
 | `pnpm format`        | Prettier auto-fix                                        |
 | `pnpm svelte-check`  | TypeScript + Svelte type check                           |
 | `pnpm generate-api`  | Regenerate API client from `src/lib/contracts/todo.yaml` |
+
+## Environment Variables
+
+| Variable            | Default   | Description                                              |
+| ------------------- | --------- | -------------------------------------------------------- |
+| `PUBLIC_API_BASE_URL` | `/api/v1` | API base path used by the generated client               |
+| `BACKEND_HOST`      | —         | Backend service hostname for nginx proxying (required)   |
+| `BACKEND_PORT`      | —         | Backend service port for nginx proxying (required)       |
+
+`PUBLIC_API_BASE_URL` is a SvelteKit build-time variable. `BACKEND_HOST` and `BACKEND_PORT` are substituted into the nginx config at container startup via `envsubst`.
