@@ -96,10 +96,10 @@ App is served at `http://localhost:5173` in dev mode, `http://localhost:80` in D
 
 ## Environment Variables
 
-| Variable            | Default   | Description                                              |
-| ------------------- | --------- | -------------------------------------------------------- |
-| `PUBLIC_API_BASE_URL` | `/api/v1` | API base path used by the generated client               |
-| `BACKEND_HOST`      | —         | Backend service hostname for nginx proxying (required)   |
-| `BACKEND_PORT`      | —         | Backend service port for nginx proxying (required)       |
+| Variable              | Default   | Description                                            |
+| --------------------- | --------- | ------------------------------------------------------ |
+| `PUBLIC_API_BASE_URL` | `/api/v1` | API base path used by the generated client             |
+| `BACKEND_HOST`        | —         | Backend service hostname for nginx proxying (required) |
+| `BACKEND_PORT`        | —         | Backend service port for nginx proxying (required)     |
 
 `PUBLIC_API_BASE_URL` is a SvelteKit build-time variable. `BACKEND_HOST` and `BACKEND_PORT` are substituted into the nginx config at container startup via `envsubst`.
