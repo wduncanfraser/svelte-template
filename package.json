@@ -9,11 +9,11 @@
 		"preview": "vite preview",
 		"test": "vitest run",
 		"test:coverage": "vitest run --coverage",
+		"test:e2e": "playwright test",
 		"lint": "eslint . && prettier --check .",
 		"format": "prettier --write .",
 		"svelte-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"generate-api": "openapi-ts",
-		"test:e2e": "playwright test"
+		"generate-api": "openapi-ts"
 	},
 	"packageManager": "pnpm@10.33.2",
 	"engines": {
