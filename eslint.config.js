@@ -19,6 +19,6 @@ export default tseslint.config(
 		}
 	},
 	{
-		ignores: ['src/lib/generated/', '.svelte-kit/', 'build/']
+		ignores: ['src/lib/generated/', '.svelte-kit/', 'build/', 'coverage/']
 	}
 );

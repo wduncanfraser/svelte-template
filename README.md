@@ -82,14 +82,14 @@ App is served at `http://localhost:5173` in dev mode, `http://localhost:80` in D
 
 ## Build & Test Commands
 
-| Command | Description |
-|---|---|
-| `pnpm dev` | Dev server at `http://localhost:5173` |
-| `pnpm build` | Production static build → `build/` |
-| `pnpm preview` | Preview production build locally |
-| `pnpm test` | Run Vitest |
-| `pnpm test:coverage` | Run Vitest with coverage report |
-| `pnpm lint` | ESLint + Prettier check |
-| `pnpm format` | Prettier auto-fix |
-| `pnpm svelte-check` | TypeScript + Svelte type check |
-| `pnpm generate-api` | Regenerate API client from `src/lib/contracts/todo.yaml` |
+| Command              | Description                                              |
+| -------------------- | -------------------------------------------------------- |
+| `pnpm dev`           | Dev server at `http://localhost:5173`                    |
+| `pnpm build`         | Production static build → `build/`                       |
+| `pnpm preview`       | Preview production build locally                         |
+| `pnpm test`          | Run Vitest                                               |
+| `pnpm test:coverage` | Run Vitest with coverage report                          |
+| `pnpm lint`          | ESLint + Prettier check                                  |
+| `pnpm format`        | Prettier auto-fix                                        |
+| `pnpm svelte-check`  | TypeScript + Svelte type check                           |
+| `pnpm generate-api`  | Regenerate API client from `src/lib/contracts/todo.yaml` |
