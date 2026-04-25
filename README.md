@@ -2,6 +2,8 @@
 
 An opinionated SvelteKit template for static SPAs consuming a typed REST API. Encodes an API-first approach with generated TypeScript clients from an OpenAPI contract, session-cookie authentication, and a Tailwind CSS v4 UI. Intended as a starting point for new frontends rather than a tutorial project.
 
+Designed to be used alongside [ktor-koin-template](https://github.com/wduncanfraser/ktor-koin-template), a companion Ktor backend template that provides the API, authentication, and Docker network this frontend expects.
+
 ## Tech Stack
 
 **Framework & Runtime**
