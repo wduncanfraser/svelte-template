@@ -44,3 +44,7 @@ updates:
     day: saturday
     time: "08:00"
     timezone: America/Chicago
+  ignore:
+  - dependency-name: node
+    update-types:
+    - version-update:semver-major
