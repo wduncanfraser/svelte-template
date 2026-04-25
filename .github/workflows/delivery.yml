@@ -158,6 +158,8 @@ jobs:
     - uses: pnpm/action-setup@v6
       with:
         run_install: true
+    - name: Sync SvelteKit
+      run: pnpm svelte-kit sync
     - name: Generate API client
       run: pnpm generate-api
     - name: Check for uncommitted changes
