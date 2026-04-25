@@ -80,7 +80,7 @@
 	</form>
 
 	<div class="flex gap-2">
-		{#each filters as f}
+		{#each filters as f (f.value)}
 			<button
 				onclick={() => {
 					page = 1;
