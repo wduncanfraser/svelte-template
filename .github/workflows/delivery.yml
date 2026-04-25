@@ -90,7 +90,13 @@ jobs:
       with:
         run_install: true
     - name: Run tests
-      run: pnpm test
+      run: pnpm test:coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v6
+      with:
+        files: coverage/lcov.info
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
 
   docker-build:
     runs-on: ubuntu-24.04
