@@ -9,31 +9,16 @@ pnpm dev              # Dev server at http://localhost:5173 (proxies /api/, /log
 pnpm build            # Production static build → build/
 pnpm preview          # Preview production build locally
 pnpm test             # Run Vitest
+pnpm test:coverage    # Run Vitest with coverage report
+pnpm test -- <file>   # Run a single test file
+pnpm test:e2e         # Run Playwright e2e tests
 pnpm lint             # ESLint + Prettier check
 pnpm format           # Prettier auto-fix
 pnpm svelte-check     # TypeScript + Svelte type check
 pnpm generate-api     # Regenerate API client from src/lib/contracts/todo.yaml
 ```
 
-## Running Locally
-
-Requires the backend running at `http://localhost:8080`. See `../ktor-koin-template` for backend setup.
-
-```bash
-pnpm dev
-```
-
-Or run the full stack via Docker (frontend + backend). The frontend connects to the backend over the shared `todo-net` Docker network — start the backend stack first:
-
-```bash
-# In ../ktor-koin-template/
-docker compose up -d
-
-# Then in this directory
-docker compose up
-```
-
-Requires a `.env` file at `../ktor-koin-template/.env` with Discord OAuth credentials.
+Requires the backend running at `http://localhost:8080` for `pnpm dev`. See the README for Docker full-stack setup.
 
 ## Architecture
 
@@ -76,6 +61,10 @@ src/routes/
   +page.svelte           # Todo list page
   +error.svelte
 ```
+
+### Testing
+
+Tests run in jsdom via Vitest. The setup file at `src/test/setup.ts` imports `@testing-library/jest-dom` matchers. New test files go alongside their source file or under `src/test/`.
 
 ### Todo Feature (Removable)
 

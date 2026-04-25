@@ -11,7 +11,7 @@ env:
   SERVICE_TAG: svelte-template:latest
 
 jobs:
-  yaml-lint:
+  lint-yaml:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -28,7 +28,7 @@ jobs:
         filter_mode: file
         level: warning
 
-  github-actions-lint:
+  lint-github-actions:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -105,6 +105,60 @@ jobs:
         fail_ci_if_error: false
         token: ${{ secrets.CODECOV_TOKEN }}
 
+  test-e2e:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: '.node-version'
+    - uses: pnpm/action-setup@v6
+      with:
+        run_install: true
+    - name: Install Playwright browsers
+      run: pnpm exec playwright install --with-deps chromium
+    - name: Run e2e tests
+      run: pnpm test:e2e
+
+  api-codegen:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: '.node-version'
+    - uses: pnpm/action-setup@v6
+      with:
+        run_install: true
+    - name: Sync SvelteKit
+      run: pnpm svelte-kit sync
+    - name: Generate API client
+      run: pnpm generate-api
+    - name: Check for uncommitted changes
+      run: git diff --exit-code
+
+  dependency-submission:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: '.node-version'
+    - uses: pnpm/action-setup@v6
+      with:
+        run_install: true
+    - name: Submit dependency graph
+      uses: advanced-security/component-detection-dependency-submission-action@v0.1.1
+
   docker-build:
     runs-on: ubuntu-24.04
     permissions:
@@ -145,54 +199,19 @@ jobs:
       with:
         sarif_file: trivy-results.sarif
 
-  api-codegen:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-
-    steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-node@v6
-      with:
-        node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v6
-      with:
-        run_install: true
-    - name: Sync SvelteKit
-      run: pnpm svelte-kit sync
-    - name: Generate API client
-      run: pnpm generate-api
-    - name: Check for uncommitted changes
-      run: git diff --exit-code
-
-  dependency-submission:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-
-    steps:
-    - uses: actions/checkout@v6
-    - uses: actions/setup-node@v6
-      with:
-        node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v6
-      with:
-        run_install: true
-    - name: Submit dependency graph
-      uses: advanced-security/component-detection-dependency-submission-action@v0.1.1
-
   required-pr-checks:
     if: ${{ always() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-24.04
     needs:
-    - yaml-lint
-    - github-actions-lint
+    - lint-yaml
+    - lint-github-actions
     - lint
     - svelte-check
     - test
-    - docker-build
+    - test-e2e
     - api-codegen
     - dependency-submission
+    - docker-build
     permissions: {}
 
     steps:
