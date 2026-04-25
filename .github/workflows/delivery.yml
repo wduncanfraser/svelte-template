@@ -97,6 +97,12 @@ jobs:
         files: coverage/lcov.info
         fail_ci_if_error: false
         token: ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload test results to Codecov
+      uses: codecov/test-results-action@v1
+      with:
+        files: test-results/junit.xml
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
 
   docker-build:
     runs-on: ubuntu-24.04
