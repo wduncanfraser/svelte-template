@@ -1,0 +1,46 @@
+---
+version: 2
+updates:
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: weekly
+    day: saturday
+    time: "08:00"
+    timezone: America/Chicago
+- package-ecosystem: npm
+  directory: /
+  schedule:
+    interval: weekly
+    day: saturday
+    time: "08:00"
+    timezone: America/Chicago
+  open-pull-requests-limit: 20
+  groups:
+    svelte:
+      patterns:
+      - svelte
+      - "@sveltejs/*"
+      - svelte-check
+      - eslint-plugin-svelte
+      - prettier-plugin-svelte
+    tailwind:
+      patterns:
+      - tailwindcss
+      - "@tailwindcss/*"
+      - prettier-plugin-tailwindcss
+    testing-library:
+      patterns:
+      - "@testing-library/*"
+    eslint:
+      patterns:
+      - eslint
+      - "@eslint/*"
+      - typescript-eslint
+- package-ecosystem: docker
+  directory: /
+  schedule:
+    interval: weekly
+    day: saturday
+    time: "08:00"
+    timezone: America/Chicago
