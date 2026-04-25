@@ -2,6 +2,8 @@
 
 An opinionated SvelteKit template for static SPAs consuming a typed REST API. Encodes an API-first approach with generated TypeScript clients from an OpenAPI contract, session-cookie authentication, and a Tailwind CSS v4 UI. Intended as a starting point for new frontends rather than a tutorial project.
 
+Designed to be used alongside [ktor-koin-template](https://github.com/wduncanfraser/ktor-koin-template), a companion Ktor backend template that provides the API, authentication, and Docker network this frontend expects.
+
 ## Tech Stack
 
 **Framework & Runtime**
@@ -93,3 +95,13 @@ App is served at `http://localhost:5173` in dev mode, `http://localhost:80` in D
 | `pnpm format`        | Prettier auto-fix                                        |
 | `pnpm svelte-check`  | TypeScript + Svelte type check                           |
 | `pnpm generate-api`  | Regenerate API client from `src/lib/contracts/todo.yaml` |
+
+## Environment Variables
+
+| Variable              | Default   | Description                                            |
+| --------------------- | --------- | ------------------------------------------------------ |
+| `PUBLIC_API_BASE_URL` | `/api/v1` | API base path used by the generated client             |
+| `BACKEND_HOST`        | —         | Backend service hostname for nginx proxying (required) |
+| `BACKEND_PORT`        | —         | Backend service port for nginx proxying (required)     |
+
+`PUBLIC_API_BASE_URL` is a SvelteKit build-time variable. `BACKEND_HOST` and `BACKEND_PORT` are substituted into the nginx config at container startup via `envsubst`.

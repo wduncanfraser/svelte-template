@@ -14,6 +14,6 @@ RUN pnpm build
 FROM nginx:alpine AS serve
 
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
 
 EXPOSE 80

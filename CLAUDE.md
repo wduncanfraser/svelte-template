@@ -74,4 +74,4 @@ The todo CRUD feature is self-contained in `src/lib/components/TodoList.svelte`,
 
 Multi-stage Docker build: `node:24-alpine` builds the static assets, `nginx:alpine` serves them. nginx proxies `/api/`, `/login`, `/logout`, `/callback` to the backend.
 
-The environment variable `PUBLIC_API_BASE_URL` overrides the default API base path (`/api/v1`).
+Environment variables: `PUBLIC_API_BASE_URL` overrides the API base path (build-time). `BACKEND_HOST` and `BACKEND_PORT` set the nginx upstream (substituted at container startup via `envsubst`).

@@ -1,5 +1,5 @@
 upstream backend {
-    server app:8080;
+    server ${BACKEND_HOST}:${BACKEND_PORT};
 }
 
 server {
