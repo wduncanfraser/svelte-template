@@ -21,12 +21,12 @@ An opinionated SvelteKit template for static SPAs consuming a typed REST API. En
 
 **Testing**
 
-- Vitest 4.x
+- Vitest
 - `@testing-library/svelte` + `@testing-library/user-event`
 
 **Quality**
 
-- ESLint v9 flat config + `typescript-eslint`
+- ESLint flat config + `typescript-eslint`
 - Prettier with `prettier-plugin-svelte`
 - `svelte-check` for TypeScript + Svelte type checking
 

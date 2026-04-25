@@ -12,7 +12,8 @@
 		"lint": "eslint . && prettier --check .",
 		"format": "prettier --write .",
 		"svelte-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"generate-api": "openapi-ts"
+		"generate-api": "openapi-ts",
+		"test:e2e": "playwright test"
 	},
 	"packageManager": "pnpm@10.33.2",
 	"engines": {
@@ -21,6 +22,7 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@hey-api/openapi-ts": "^0.96.1",
+		"@playwright/test": "^1.59.1",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.58.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
