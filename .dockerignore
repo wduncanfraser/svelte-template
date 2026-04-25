@@ -1,0 +1,27 @@
+node_modules/
+.svelte-kit/
+build/
+dist/
+coverage/
+test-results/
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+
+# Git
+.git/
+
+# Docker
+compose.yaml
+
+# CI / tooling config
+.github/
+.claude/
+codecov.yml
+
+# Docs
+README.md
