@@ -54,7 +54,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v6
       with:
         run_install: true
     - name: Run ESLint and Prettier
@@ -70,7 +70,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v6
       with:
         run_install: true
     - name: Run svelte-check
@@ -86,7 +86,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v6
       with:
         run_install: true
     - name: Run tests
@@ -148,7 +148,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v6
       with:
         run_install: true
     - name: Generate API client
@@ -166,7 +166,7 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-    - uses: pnpm/action-setup@v4
+    - uses: pnpm/action-setup@v6
       with:
         run_install: true
     - name: Submit dependency graph
