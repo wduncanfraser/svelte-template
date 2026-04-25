@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Run yamllint
       uses: reviewdog/action-yamllint@v1
       with:
@@ -35,7 +35,7 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Run actionlint
       uses: reviewdog/action-actionlint@v1
       with:
@@ -50,7 +50,7 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
@@ -66,7 +66,7 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
@@ -82,7 +82,7 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
@@ -106,7 +106,7 @@ jobs:
       actions: read
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -144,7 +144,7 @@ jobs:
       contents: read
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
@@ -162,7 +162,7 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
