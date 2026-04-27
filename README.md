@@ -40,21 +40,28 @@ Auth is session-cookie based. The frontend never handles tokens. Login initiates
 
 ```
 src/lib/
-  api/client.ts          # Configures generated client (baseUrl, redirect: 'manual')
-  auth.svelte.ts         # Auth state and checkAuth()
-  contracts/todo.yaml    # OpenAPI contract (update from backend, then regenerate)
-  generated/todo/        # Generated API client (do not edit)
+  api/client.ts             # Configures generated client (baseUrl, redirect: 'manual')
+  auth.svelte.ts            # Auth state and checkAuth()
+  contracts/todo.yaml       # OpenAPI contract (update from backend, then regenerate)
+  generated/todo/           # Generated API client (do not edit)
   components/
-    TodoItem.svelte
-    TodoList.svelte
+    TodoItem.svelte         # Single todo item (expand/toggle/delete)
+    TodoItemList.svelte     # Todos within a specific list (CRUD)
+    TodoListCard.svelte     # Single todo list row (inline edit/delete/link)
+    TodoLists.svelte        # Todo lists index (CRUD)
+    AllTodos.svelte         # Cross-list todos view (filter/toggle/delete)
 src/routes/
-  +layout.ts             # Disables SSR (SPA mode)
-  +layout.svelte         # Auth gate + app shell
-  +page.svelte           # Todo list page
+  +layout.ts                # Disables SSR (SPA mode)
+  +layout.svelte            # Auth gate + app shell with nav
+  +page.svelte              # Todo lists index page
   +error.svelte
+  lists/[listId]/
+    +page.svelte            # Todos within a specific list
+  todos/
+    +page.svelte            # All todos across lists
 ```
 
-The todo CRUD feature (`TodoList.svelte`, `TodoItem.svelte`, `+page.svelte`) is self-contained and removable — replace it with your own feature when using this as a template.
+The todo feature is self-contained and removable — the components under `src/lib/components/`, the routes under `src/routes/lists/` and `src/routes/todos/`, and `src/routes/+page.svelte` can all be replaced with your own feature when using this as a template.
 
 ## Code Generation
 

@@ -53,13 +53,20 @@ src/lib/
   contracts/todo.yaml    # OpenAPI contract (do not edit — update from backend)
   generated/todo/        # Generated API client (do not edit)
   components/
-    TodoItem.svelte
-    TodoList.svelte
+    TodoItem.svelte         # Single todo item (expand/toggle/delete)
+    TodoItemList.svelte     # Todos within a specific list (CRUD)
+    TodoListCard.svelte     # Single todo list row (inline edit/delete/link)
+    TodoLists.svelte        # Todo lists index (CRUD)
+    AllTodos.svelte         # Cross-list todos view (filter/toggle/delete)
 src/routes/
-  +layout.ts             # Disables SSR (SPA mode)
-  +layout.svelte         # Auth gate + app shell
-  +page.svelte           # Todo list page
+  +layout.ts                # Disables SSR (SPA mode)
+  +layout.svelte            # Auth gate + app shell with nav
+  +page.svelte              # Todo lists index page
   +error.svelte
+  lists/[listId]/
+    +page.svelte            # Todos within a specific list
+  todos/
+    +page.svelte            # All todos across lists
 ```
 
 ### Testing
@@ -68,7 +75,7 @@ Tests run in jsdom via Vitest. The setup file at `src/test/setup.ts` imports `@t
 
 ### Todo Feature (Removable)
 
-The todo CRUD feature is self-contained in `src/lib/components/TodoList.svelte`, `src/lib/components/TodoItem.svelte`, and `src/routes/+page.svelte`. Remove these and replace with your own feature when using this as a template.
+The todo feature is self-contained in `src/lib/components/`, `src/routes/lists/`, `src/routes/todos/`, and `src/routes/+page.svelte`. Remove these and replace with your own feature when using this as a template.
 
 ### Deployment
 
