@@ -28,7 +28,23 @@ export type ProblemDetails = {
      * URI reference identifying the specific occurrence of the problem.
      */
     instance: string;
+    /**
+     * Field-level validation errors, keyed by field path with a list of messages per field.
+     */
+    errors?: {
+        [key: string]: Array<string>;
+    };
 };
+
+/**
+ * The unique identifier of the Todo list.
+ */
+export type TodoId = string;
+
+/**
+ * The unique identifier of the Todo.
+ */
+export type TodoListId = string;
 
 /**
  * The name of the Todo.
@@ -49,7 +65,8 @@ export type UpdatedAt = string;
  * A todo item.
  */
 export type TodoResponse = {
-    id: string;
+    id: TodoId;
+    todoListId: TodoListId;
     name: TodoName;
     /**
      * Is the Todo completed.
@@ -59,6 +76,10 @@ export type TodoResponse = {
      * Date and time when the Todo was marked completed.
      */
     completedAt?: string;
+    /**
+     * The id of the user who created this todo item.
+     */
+    createdBy: string;
     createdAt: CreatedAt;
     updatedAt: UpdatedAt;
 };
@@ -71,6 +92,41 @@ export type PaginationMetadata = {
     pageSize: number;
     totalPages: number;
     totalRows: number;
+};
+
+/**
+ * The name of the Todo list.
+ */
+export type TodoListName = string;
+
+/**
+ * An optional description of the Todo list.
+ */
+export type TodoListDescription = string | null;
+
+/**
+ * A todo list.
+ */
+export type TodoListResponse = {
+    id: TodoListId;
+    name: TodoListName;
+    description?: TodoListDescription;
+    /**
+     * The id of the user who created this todo list.
+     */
+    createdBy: string;
+    createdAt: CreatedAt;
+    updatedAt: UpdatedAt;
+};
+
+export type CreateTodoListRequest = {
+    name: TodoListName;
+    description?: TodoListDescription;
+};
+
+export type UpdateTodoListRequest = {
+    name: TodoListName;
+    description?: TodoListDescription;
 };
 
 export type CreateTodoRequest = {
@@ -101,9 +157,14 @@ export type PageNumber = number;
 export type TodoCompleted = boolean;
 
 /**
+ * The unique identifier of the Todo list.
+ */
+export type TodoListId2 = TodoListId;
+
+/**
  * The unique identifier of the Todo.
  */
-export type TodoId = string;
+export type TodoId2 = TodoId;
 
 export type ListTodosData = {
     body?: never;
@@ -154,17 +215,23 @@ export type ListTodosResponses = {
 
 export type ListTodosResponse = ListTodosResponses[keyof ListTodosResponses];
 
-export type CreateTodoData = {
-    /**
-     * The request body for creating a Todo.
-     */
-    body: CreateTodoRequest;
+export type ListTodoListsData = {
+    body?: never;
     path?: never;
-    query?: never;
-    url: '/todos';
+    query?: {
+        /**
+         * The number of items to return in a single request.
+         */
+        pageSize?: number;
+        /**
+         * The page number of results to return.
+         */
+        page?: number;
+    };
+    url: '/todo-lists';
 };
 
-export type CreateTodoErrors = {
+export type ListTodoListsErrors = {
     /**
      * Bad Request.
      */
@@ -179,30 +246,317 @@ export type CreateTodoErrors = {
     default: ProblemDetails;
 };
 
-export type CreateTodoError = CreateTodoErrors[keyof CreateTodoErrors];
+export type ListTodoListsError = ListTodoListsErrors[keyof ListTodoListsErrors];
 
-export type CreateTodoResponses = {
+export type ListTodoListsResponses = {
+    /**
+     * The list of Todo lists with pagination metadata.
+     */
+    200: {
+        data: Array<TodoListResponse>;
+        pagination: PaginationMetadata;
+    };
+};
+
+export type ListTodoListsResponse = ListTodoListsResponses[keyof ListTodoListsResponses];
+
+export type CreateTodoListData = {
+    /**
+     * The request body for creating a Todo list.
+     */
+    body: CreateTodoListRequest;
+    path?: never;
+    query?: never;
+    url: '/todo-lists';
+};
+
+export type CreateTodoListErrors = {
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * Unprocessable Entity.
+     */
+    422: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
+};
+
+export type CreateTodoListError = CreateTodoListErrors[keyof CreateTodoListErrors];
+
+export type CreateTodoListResponses = {
+    /**
+     * Todo list was created successfully.
+     */
+    201: TodoListResponse;
+};
+
+export type CreateTodoListResponse = CreateTodoListResponses[keyof CreateTodoListResponses];
+
+export type DeleteTodoListData = {
+    body?: never;
+    path: {
+        /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+    };
+    query?: never;
+    url: '/todo-lists/{list-id}';
+};
+
+export type DeleteTodoListErrors = {
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
+};
+
+export type DeleteTodoListError = DeleteTodoListErrors[keyof DeleteTodoListErrors];
+
+export type DeleteTodoListResponses = {
+    /**
+     * Todo list was deleted successfully.
+     */
+    204: void;
+};
+
+export type DeleteTodoListResponse = DeleteTodoListResponses[keyof DeleteTodoListResponses];
+
+export type GetTodoListData = {
+    body?: never;
+    path: {
+        /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+    };
+    query?: never;
+    url: '/todo-lists/{list-id}';
+};
+
+export type GetTodoListErrors = {
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
+};
+
+export type GetTodoListError = GetTodoListErrors[keyof GetTodoListErrors];
+
+export type GetTodoListResponses = {
+    /**
+     * Todo list was retrieved successfully.
+     */
+    200: TodoListResponse;
+};
+
+export type GetTodoListResponse = GetTodoListResponses[keyof GetTodoListResponses];
+
+export type UpdateTodoListData = {
+    /**
+     * The request body for updating a Todo list.
+     */
+    body: UpdateTodoListRequest;
+    path: {
+        /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+    };
+    query?: never;
+    url: '/todo-lists/{list-id}';
+};
+
+export type UpdateTodoListErrors = {
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * Unprocessable Entity.
+     */
+    422: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
+};
+
+export type UpdateTodoListError = UpdateTodoListErrors[keyof UpdateTodoListErrors];
+
+export type UpdateTodoListResponses = {
+    /**
+     * Todo list was updated successfully.
+     */
+    200: TodoListResponse;
+};
+
+export type UpdateTodoListResponse = UpdateTodoListResponses[keyof UpdateTodoListResponses];
+
+export type ListTodosInListData = {
+    body?: never;
+    path: {
+        /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+    };
+    query?: {
+        /**
+         * The number of items to return in a single request.
+         */
+        pageSize?: number;
+        /**
+         * The page number of results to return.
+         */
+        page?: number;
+        /**
+         * Filter for todos to only list completed vs incomplete records.
+         */
+        completed?: boolean;
+    };
+    url: '/todo-lists/{list-id}/todos';
+};
+
+export type ListTodosInListErrors = {
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
+};
+
+export type ListTodosInListError = ListTodosInListErrors[keyof ListTodosInListErrors];
+
+export type ListTodosInListResponses = {
+    /**
+     * The list of Todos with pagination metadata.
+     */
+    200: {
+        data: Array<TodoResponse>;
+        pagination: PaginationMetadata;
+    };
+};
+
+export type ListTodosInListResponse = ListTodosInListResponses[keyof ListTodosInListResponses];
+
+export type CreateTodoInListData = {
+    /**
+     * The request body for creating a Todo.
+     */
+    body: CreateTodoRequest;
+    path: {
+        /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+    };
+    query?: never;
+    url: '/todo-lists/{list-id}/todos';
+};
+
+export type CreateTodoInListErrors = {
+    /**
+     * Bad Request.
+     */
+    400: ProblemDetails;
+    /**
+     * Unauthorized. The request requires authentication.
+     */
+    401: ProblemDetails;
+    /**
+     * The specified resource was not found
+     */
+    404: ProblemDetails;
+    /**
+     * Unprocessable Entity.
+     */
+    422: ProblemDetails;
+    /**
+     * An unexpected error occurred when processing the request.
+     */
+    default: ProblemDetails;
+};
+
+export type CreateTodoInListError = CreateTodoInListErrors[keyof CreateTodoInListErrors];
+
+export type CreateTodoInListResponses = {
     /**
      * Todo was created successfully.
      */
     201: TodoResponse;
 };
 
-export type CreateTodoResponse = CreateTodoResponses[keyof CreateTodoResponses];
+export type CreateTodoInListResponse = CreateTodoInListResponses[keyof CreateTodoInListResponses];
 
-export type DeleteTodoData = {
+export type DeleteTodoInListData = {
     body?: never;
     path: {
         /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+        /**
          * The unique identifier of the Todo.
          */
-        'todo-id': string;
+        'todo-id': TodoId;
     };
     query?: never;
-    url: '/todos/{todo-id}';
+    url: '/todo-lists/{list-id}/todos/{todo-id}';
 };
 
-export type DeleteTodoErrors = {
+export type DeleteTodoInListErrors = {
     /**
      * Bad Request.
      */
@@ -221,30 +575,34 @@ export type DeleteTodoErrors = {
     default: ProblemDetails;
 };
 
-export type DeleteTodoError = DeleteTodoErrors[keyof DeleteTodoErrors];
+export type DeleteTodoInListError = DeleteTodoInListErrors[keyof DeleteTodoInListErrors];
 
-export type DeleteTodoResponses = {
+export type DeleteTodoInListResponses = {
     /**
      * Todo was deleted successfully.
      */
     204: void;
 };
 
-export type DeleteTodoResponse = DeleteTodoResponses[keyof DeleteTodoResponses];
+export type DeleteTodoInListResponse = DeleteTodoInListResponses[keyof DeleteTodoInListResponses];
 
-export type GetTodoData = {
+export type GetTodoInListData = {
     body?: never;
     path: {
         /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+        /**
          * The unique identifier of the Todo.
          */
-        'todo-id': string;
+        'todo-id': TodoId;
     };
     query?: never;
-    url: '/todos/{todo-id}';
+    url: '/todo-lists/{list-id}/todos/{todo-id}';
 };
 
-export type GetTodoErrors = {
+export type GetTodoInListErrors = {
     /**
      * Bad Request.
      */
@@ -263,33 +621,37 @@ export type GetTodoErrors = {
     default: ProblemDetails;
 };
 
-export type GetTodoError = GetTodoErrors[keyof GetTodoErrors];
+export type GetTodoInListError = GetTodoInListErrors[keyof GetTodoInListErrors];
 
-export type GetTodoResponses = {
+export type GetTodoInListResponses = {
     /**
      * Todo was retrieved successfully.
      */
     200: TodoResponse;
 };
 
-export type GetTodoResponse = GetTodoResponses[keyof GetTodoResponses];
+export type GetTodoInListResponse = GetTodoInListResponses[keyof GetTodoInListResponses];
 
-export type UpdateTodoData = {
+export type UpdateTodoInListData = {
     /**
      * The request body for updating a Todo.
      */
     body: UpdateTodoRequest;
     path: {
         /**
+         * The unique identifier of the Todo list.
+         */
+        'list-id': TodoListId;
+        /**
          * The unique identifier of the Todo.
          */
-        'todo-id': string;
+        'todo-id': TodoId;
     };
     query?: never;
-    url: '/todos/{todo-id}';
+    url: '/todo-lists/{list-id}/todos/{todo-id}';
 };
 
-export type UpdateTodoErrors = {
+export type UpdateTodoInListErrors = {
     /**
      * Bad Request.
      */
@@ -303,18 +665,22 @@ export type UpdateTodoErrors = {
      */
     404: ProblemDetails;
     /**
+     * Unprocessable Entity.
+     */
+    422: ProblemDetails;
+    /**
      * An unexpected error occurred when processing the request.
      */
     default: ProblemDetails;
 };
 
-export type UpdateTodoError = UpdateTodoErrors[keyof UpdateTodoErrors];
+export type UpdateTodoInListError = UpdateTodoInListErrors[keyof UpdateTodoInListErrors];
 
-export type UpdateTodoResponses = {
+export type UpdateTodoInListResponses = {
     /**
      * Todo was updated successfully.
      */
     200: TodoResponse;
 };
 
-export type UpdateTodoResponse = UpdateTodoResponses[keyof UpdateTodoResponses];
+export type UpdateTodoInListResponse = UpdateTodoInListResponses[keyof UpdateTodoInListResponses];

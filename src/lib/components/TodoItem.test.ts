@@ -5,8 +5,10 @@ import TodoItem from './TodoItem.svelte';
 
 const baseTodo = {
 	id: '1',
+	todoListId: 'list-1',
 	name: 'Cook dinner',
 	completed: false,
+	createdBy: 'user-1',
 	createdAt: '2024-01-15T10:00:00Z',
 	updatedAt: '2024-01-16T12:30:00Z'
 };
@@ -75,5 +77,21 @@ describe('TodoItem', () => {
 		render(TodoItem, { todo: baseTodo, ontoggle: () => {}, ondelete: () => {} });
 		await user.click(screen.getByText('Cook dinner'));
 		expect(screen.queryByText('Completed')).not.toBeInTheDocument();
+	});
+
+	it('shows a list link in the detail panel', async () => {
+		const user = userEvent.setup();
+		render(TodoItem, { todo: baseTodo, ontoggle: () => {}, ondelete: () => {} });
+		await user.click(screen.getByText('Cook dinner'));
+		const link = screen.getByRole('link', { name: 'list-1' });
+		expect(link).toBeInTheDocument();
+		expect(link).toHaveAttribute('href', '/lists/list-1');
+	});
+
+	it('shows createdBy in the detail panel', async () => {
+		const user = userEvent.setup();
+		render(TodoItem, { todo: baseTodo, ontoggle: () => {}, ondelete: () => {} });
+		await user.click(screen.getByText('Cook dinner'));
+		expect(screen.getByText('user-1')).toBeInTheDocument();
 	});
 });
