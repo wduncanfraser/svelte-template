@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createTodo, deleteTodo, listTodos, updateTodo } from '$lib/api/client';
+	import { deleteTodoInList, listTodos, updateTodoInList } from '$lib/api/client';
 	import type { TodoResponse } from '$lib/api/client';
 	import TodoItem from './TodoItem.svelte';
 
@@ -9,7 +9,6 @@
 	let filter = $state<Filter>('all');
 	let page = $state(1);
 	let totalPages = $state(1);
-	let newTodoName = $state('');
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
@@ -33,27 +32,18 @@
 		loading = false;
 	}
 
-	async function handleCreate(event: SubmitEvent) {
-		event.preventDefault();
-		const name = newTodoName.trim();
-		if (!name) return;
-		const result = await createTodo({ body: { name } });
-		if (result.data) {
-			newTodoName = '';
-			await fetchTodos();
-		}
-	}
-
 	async function handleToggle(todo: TodoResponse) {
-		await updateTodo({
-			path: { 'todo-id': todo.id },
+		await updateTodoInList({
+			path: { 'list-id': todo.todoListId, 'todo-id': todo.id },
 			body: { name: todo.name, completed: !todo.completed }
 		});
 		await fetchTodos();
 	}
 
 	async function handleDelete(id: string) {
-		await deleteTodo({ path: { 'todo-id': id } });
+		const todo = todos.find((t) => t.id === id);
+		if (!todo) return;
+		await deleteTodoInList({ path: { 'list-id': todo.todoListId, 'todo-id': id } });
 		await fetchTodos();
 	}
 
@@ -63,22 +53,6 @@
 </script>
 
 <div class="space-y-6">
-	<form onsubmit={handleCreate} class="flex gap-2">
-		<input
-			type="text"
-			bind:value={newTodoName}
-			placeholder="Add a new todo…"
-			class="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none"
-		/>
-		<button
-			type="submit"
-			class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-50"
-			disabled={!newTodoName.trim()}
-		>
-			Add
-		</button>
-	</form>
-
 	<div class="flex gap-2">
 		{#each filters as f (f.value)}
 			<button
@@ -100,7 +74,7 @@
 	{:else if error}
 		<p class="text-center text-sm text-red-500">{error}</p>
 	{:else if todos.length === 0}
-		<p class="text-center text-sm text-gray-400">No todos yet.</p>
+		<p class="text-center text-sm text-gray-400">No todos found.</p>
 	{:else}
 		<ul class="space-y-2">
 			{#each todos as todo (todo.id)}

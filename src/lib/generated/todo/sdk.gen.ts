@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { CreateTodoData, CreateTodoErrors, CreateTodoResponses, DeleteTodoData, DeleteTodoErrors, DeleteTodoResponses, GetTodoData, GetTodoErrors, GetTodoResponses, ListTodosData, ListTodosErrors, ListTodosResponses, UpdateTodoData, UpdateTodoErrors, UpdateTodoResponses } from './types.gen';
+import type { CreateTodoInListData, CreateTodoInListErrors, CreateTodoInListResponses, CreateTodoListData, CreateTodoListErrors, CreateTodoListResponses, DeleteTodoInListData, DeleteTodoInListErrors, DeleteTodoInListResponses, DeleteTodoListData, DeleteTodoListErrors, DeleteTodoListResponses, GetTodoInListData, GetTodoInListErrors, GetTodoInListResponses, GetTodoListData, GetTodoListErrors, GetTodoListResponses, ListTodoListsData, ListTodoListsErrors, ListTodoListsResponses, ListTodosData, ListTodosErrors, ListTodosInListData, ListTodosInListErrors, ListTodosInListResponses, ListTodosResponses, UpdateTodoInListData, UpdateTodoInListErrors, UpdateTodoInListResponses, UpdateTodoListData, UpdateTodoListErrors, UpdateTodoListResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -19,7 +19,7 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
- * List all todos
+ * List all todos for the authenticated user
  */
 export const listTodos = <ThrowOnError extends boolean = false>(options?: Options<ListTodosData, ThrowOnError>) => (options?.client ?? client).get<ListTodosResponses, ListTodosErrors, ThrowOnError>({
     security: [{
@@ -32,15 +32,28 @@ export const listTodos = <ThrowOnError extends boolean = false>(options?: Option
 });
 
 /**
- * Create a todo
+ * List all todo lists
  */
-export const createTodo = <ThrowOnError extends boolean = false>(options: Options<CreateTodoData, ThrowOnError>) => (options.client ?? client).post<CreateTodoResponses, CreateTodoErrors, ThrowOnError>({
+export const listTodoLists = <ThrowOnError extends boolean = false>(options?: Options<ListTodoListsData, ThrowOnError>) => (options?.client ?? client).get<ListTodoListsResponses, ListTodoListsErrors, ThrowOnError>({
     security: [{
             in: 'cookie',
             name: 'example-cookie-id',
             type: 'apiKey'
         }],
-    url: '/todos',
+    url: '/todo-lists',
+    ...options
+});
+
+/**
+ * Create a todo list
+ */
+export const createTodoList = <ThrowOnError extends boolean = false>(options: Options<CreateTodoListData, ThrowOnError>) => (options.client ?? client).post<CreateTodoListResponses, CreateTodoListErrors, ThrowOnError>({
+    security: [{
+            in: 'cookie',
+            name: 'example-cookie-id',
+            type: 'apiKey'
+        }],
+    url: '/todo-lists',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -49,41 +62,114 @@ export const createTodo = <ThrowOnError extends boolean = false>(options: Option
 });
 
 /**
- * Delete a todo
+ * Delete a todo list
  */
-export const deleteTodo = <ThrowOnError extends boolean = false>(options: Options<DeleteTodoData, ThrowOnError>) => (options.client ?? client).delete<DeleteTodoResponses, DeleteTodoErrors, ThrowOnError>({
+export const deleteTodoList = <ThrowOnError extends boolean = false>(options: Options<DeleteTodoListData, ThrowOnError>) => (options.client ?? client).delete<DeleteTodoListResponses, DeleteTodoListErrors, ThrowOnError>({
     security: [{
             in: 'cookie',
             name: 'example-cookie-id',
             type: 'apiKey'
         }],
-    url: '/todos/{todo-id}',
+    url: '/todo-lists/{list-id}',
     ...options
 });
 
 /**
- * Get a todo
+ * Get a todo list
  */
-export const getTodo = <ThrowOnError extends boolean = false>(options: Options<GetTodoData, ThrowOnError>) => (options.client ?? client).get<GetTodoResponses, GetTodoErrors, ThrowOnError>({
+export const getTodoList = <ThrowOnError extends boolean = false>(options: Options<GetTodoListData, ThrowOnError>) => (options.client ?? client).get<GetTodoListResponses, GetTodoListErrors, ThrowOnError>({
     security: [{
             in: 'cookie',
             name: 'example-cookie-id',
             type: 'apiKey'
         }],
-    url: '/todos/{todo-id}',
+    url: '/todo-lists/{list-id}',
     ...options
 });
 
 /**
- * Update a todo
+ * Update a todo list
  */
-export const updateTodo = <ThrowOnError extends boolean = false>(options: Options<UpdateTodoData, ThrowOnError>) => (options.client ?? client).put<UpdateTodoResponses, UpdateTodoErrors, ThrowOnError>({
+export const updateTodoList = <ThrowOnError extends boolean = false>(options: Options<UpdateTodoListData, ThrowOnError>) => (options.client ?? client).put<UpdateTodoListResponses, UpdateTodoListErrors, ThrowOnError>({
     security: [{
             in: 'cookie',
             name: 'example-cookie-id',
             type: 'apiKey'
         }],
-    url: '/todos/{todo-id}',
+    url: '/todo-lists/{list-id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * List all todos in a todo list
+ */
+export const listTodosInList = <ThrowOnError extends boolean = false>(options: Options<ListTodosInListData, ThrowOnError>) => (options.client ?? client).get<ListTodosInListResponses, ListTodosInListErrors, ThrowOnError>({
+    security: [{
+            in: 'cookie',
+            name: 'example-cookie-id',
+            type: 'apiKey'
+        }],
+    url: '/todo-lists/{list-id}/todos',
+    ...options
+});
+
+/**
+ * Create a todo in a todo list
+ */
+export const createTodoInList = <ThrowOnError extends boolean = false>(options: Options<CreateTodoInListData, ThrowOnError>) => (options.client ?? client).post<CreateTodoInListResponses, CreateTodoInListErrors, ThrowOnError>({
+    security: [{
+            in: 'cookie',
+            name: 'example-cookie-id',
+            type: 'apiKey'
+        }],
+    url: '/todo-lists/{list-id}/todos',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Delete a todo in a todo list
+ */
+export const deleteTodoInList = <ThrowOnError extends boolean = false>(options: Options<DeleteTodoInListData, ThrowOnError>) => (options.client ?? client).delete<DeleteTodoInListResponses, DeleteTodoInListErrors, ThrowOnError>({
+    security: [{
+            in: 'cookie',
+            name: 'example-cookie-id',
+            type: 'apiKey'
+        }],
+    url: '/todo-lists/{list-id}/todos/{todo-id}',
+    ...options
+});
+
+/**
+ * Get a todo in a todo list
+ */
+export const getTodoInList = <ThrowOnError extends boolean = false>(options: Options<GetTodoInListData, ThrowOnError>) => (options.client ?? client).get<GetTodoInListResponses, GetTodoInListErrors, ThrowOnError>({
+    security: [{
+            in: 'cookie',
+            name: 'example-cookie-id',
+            type: 'apiKey'
+        }],
+    url: '/todo-lists/{list-id}/todos/{todo-id}',
+    ...options
+});
+
+/**
+ * Update a todo in a todo list
+ */
+export const updateTodoInList = <ThrowOnError extends boolean = false>(options: Options<UpdateTodoInListData, ThrowOnError>) => (options.client ?? client).put<UpdateTodoInListResponses, UpdateTodoInListErrors, ThrowOnError>({
+    security: [{
+            in: 'cookie',
+            name: 'example-cookie-id',
+            type: 'apiKey'
+        }],
+    url: '/todo-lists/{list-id}/todos/{todo-id}',
     ...options,
     headers: {
         'Content-Type': 'application/json',

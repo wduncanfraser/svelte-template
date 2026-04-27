@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import type { TodoResponse } from '$lib/api/client';
 
 	interface Props {
@@ -53,6 +54,19 @@
 	{#if expanded}
 		<div class="border-t border-gray-100 px-4 py-3">
 			<dl class="space-y-1 text-xs text-gray-500">
+				<div class="flex gap-2">
+					<dt class="font-medium">List</dt>
+					<dd>
+						<a
+							href={resolve('/lists/[listId]', { listId: todo.todoListId })}
+							class="text-indigo-600 hover:underline">{todo.todoListId}</a
+						>
+					</dd>
+				</div>
+				<div class="flex gap-2">
+					<dt class="font-medium">Created by</dt>
+					<dd>{todo.createdBy}</dd>
+				</div>
 				<div class="flex gap-2">
 					<dt class="font-medium">Created</dt>
 					<dd>{formatDate(todo.createdAt)}</dd>
