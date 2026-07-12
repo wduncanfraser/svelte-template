@@ -157,7 +157,7 @@ jobs:
       with:
         run_install: true
     - name: Submit dependency graph
-      uses: advanced-security/component-detection-dependency-submission-action@v0.1.1
+      uses: advanced-security/component-detection-dependency-submission-action@v0.1.4
 
   docker-build:
     runs-on: ubuntu-24.04
