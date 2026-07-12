@@ -1,0 +1,35 @@
+---
+queue_rules:
+- name: default
+  merge_method: squash
+  # Serial queue (one PR tested against latest main at a time). Batching is left
+  # off because combining two Dependabot PRs produces a merged pnpm-lock.yaml
+  # that isn't regenerated on Mergify's speculative branch and would fail CI.
+  batch_size: 1
+  # Routing only: any PR targeting main may enter this queue (so non-Dependabot
+  # PRs can be queued manually with `@Mergifyio queue`). Automatic entry is gated
+  # separately by merge_protections_settings.auto_merge_conditions below.
+  queue_conditions:
+  - base=main
+  # Re-checked on the speculative branch (PR + latest main) before merging.
+  merge_conditions:
+  - check-success=required-pr-checks
+  - check-success=codecov/patch
+
+# Gate that auto-merge waits on: a PR is only auto-queued once these pass.
+merge_protections:
+- name: CI must pass
+  if:
+  - base=main
+  success_conditions:
+  - check-success=required-pr-checks
+  - check-success=codecov/patch
+
+merge_protections_settings:
+  # Audience for automatic queueing: only non-major Dependabot bumps. Major
+  # version bumps (and any non-Dependabot PR) must be queued manually with
+  # `@Mergifyio queue`. Combined with merge_protections above, matching PRs
+  # auto-queue once CI is green.
+  auto_merge_conditions:
+  - author=dependabot[bot]
+  - dependabot-update-type!=version-update:semver-major
