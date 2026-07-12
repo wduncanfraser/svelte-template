@@ -92,13 +92,13 @@ jobs:
     - name: Run tests
       run: pnpm test:coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v6
+      uses: codecov/codecov-action@v7
       with:
         files: coverage/lcov.info
         fail_ci_if_error: false
         token: ${{ secrets.CODECOV_TOKEN }}
     - name: Upload test results to Codecov
-      uses: codecov/codecov-action@v6
+      uses: codecov/codecov-action@v7
       with:
         files: test-results/junit.xml
         report_type: test_results
