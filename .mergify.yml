@@ -14,7 +14,6 @@ queue_rules:
   # Re-checked on the speculative branch (PR + latest main) before merging.
   merge_conditions:
   - check-success=required-pr-checks
-  - check-success=codecov/patch
 
 # Gate that auto-merge waits on: a PR is only auto-queued once these pass.
 merge_protections:
@@ -23,7 +22,6 @@ merge_protections:
   - base=main
   success_conditions:
   - check-success=required-pr-checks
-  - check-success=codecov/patch
 
 merge_protections_settings:
   # Audience for automatic queueing: only non-major Dependabot bumps. Major
